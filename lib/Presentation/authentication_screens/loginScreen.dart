@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Contoller/form_validation/authenticationform_validation.dart';
@@ -123,11 +122,11 @@ class LoginScreen extends StatelessWidget {
                         if (_formKey.currentState!.validate()) {
                           // If the form is valid, display a snackbar. In the real world,
                           // you'd often call a server or save the information in a database.
-                          Get.to(HomeScreen());
+                          Get.to(const HomeScreen());
                           Get.snackbar(
                             'Authentication Message',
                             'Login Successfully',
-                            duration: Duration(seconds: 3),
+                            duration: const Duration(seconds: 3),
                             backgroundColor: Colors.purple,
                             colorText: Colors.white,
                           );

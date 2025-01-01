@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../Contoller/form_validation/authenticationform_validation.dart';
 import '../../component/custom_button.dart';
-import '../HomeScreen.dart';
 import 'loginScreen.dart';
 
 class SignUpScreen extends StatelessWidget {

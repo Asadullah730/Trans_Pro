@@ -6,11 +6,11 @@ class CustomButton extends StatelessWidget {
   final bool isLoading; // New parameter to indicate if loading state
 
   const CustomButton({
-    Key? key,
+    super.key,
     @required this.text,
     @required this.onPressed,
     this.isLoading = false, // Default value for isLoading is false
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class CustomButton extends StatelessWidget {
       width: 300,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [Colors.orange, Colors.orange],
         ),
         boxShadow: [
@@ -26,7 +26,7 @@ class CustomButton extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -39,16 +39,16 @@ class CustomButton extends StatelessWidget {
               : null, // Disable button if isLoading is true
 
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 12),
             child: Center(
               child: isLoading
-                  ? CircularProgressIndicator(
+                  ? const CircularProgressIndicator(
                       // Show loading indicator if isLoading is true
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     )
                   : Text(
                       text!,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
