@@ -181,9 +181,9 @@ class RegDriverScreen2 extends StatelessWidget {
                     onPressed: () {
                       Get.defaultDialog(
                         title: "Information Check",
-                        titlePadding: EdgeInsets.only(top: 10),
+                        titlePadding: const EdgeInsets.only(top: 10),
                         middleText: "Are you sure you want to register?",
-                        contentPadding: EdgeInsets.only(top: 0),
+                        contentPadding: const EdgeInsets.only(top: 0),
                         textConfirm: "Yes",
                         textCancel: "cancel",
                         confirm: OutlinedButton(
@@ -200,7 +200,7 @@ class RegDriverScreen2 extends StatelessWidget {
                                 Get.back();
                               }
                             },
-                            child: Text(
+                            child: const Text(
                               "Ok",
                               style: TextStyle(
                                   color: Colors.red,
@@ -210,7 +210,7 @@ class RegDriverScreen2 extends StatelessWidget {
                             onPressed: () {
                               Get.back();
                             },
-                            child: Text("Cancel",
+                            child: const Text("Cancel",
                                 style: TextStyle(
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold))),

@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Welcome To TranspoPro",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
