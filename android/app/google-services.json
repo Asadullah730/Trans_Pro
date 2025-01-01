@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "819534543345",
+    "project_id": "transpro-29ee3",
+    "storage_bucket": "transpro-29ee3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819534543345:android:d9b58878eaf8961a4f2c50",
+        "android_client_info": {
+          "package_name": "com.codebotx.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB9w4HN-px5mcRjEX7FKpjrPhax7L2iW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819534543345:android:83c71dde87dfc8b14f2c50",
+        "android_client_info": {
+          "package_name": "com.codebotx.transpro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB9w4HN-px5mcRjEX7FKpjrPhax7L2iW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

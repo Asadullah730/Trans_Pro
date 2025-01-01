@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../Contoller/form_validation/authenticationform_validation.dart';
+import 'package:transpro/Contoller/firebase_auth.dart/firebase_auth.dart';
+import '../../validation/form_validation/authenticationform_validation.dart';
 import '../../component//custom_button.dart';
 import '../HomeScreen.dart';
 import 'SignUpScreen.dart';
@@ -120,16 +121,29 @@ class LoginScreen extends StatelessWidget {
                       text: "L O G I N",
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
-                          Get.to(const HomeScreen());
-                          Get.snackbar(
-                            'Authentication Message',
-                            'Login Successfully',
-                            duration: const Duration(seconds: 3),
-                            backgroundColor: Colors.purple,
-                            colorText: Colors.white,
-                          );
+                          FirebaseAuthController()
+                              .signInWithEmailAndPassword(_emailcontroller.text,
+                                  _passwordcontroller.text)
+                              .then((value) {
+                            if (value != null) {
+                              Get.to(const HomeScreen());
+                              Get.snackbar(
+                                'Authentication Message',
+                                'Login Successfully',
+                                duration: const Duration(seconds: 2),
+                                backgroundColor: Colors.purple,
+                                colorText: Colors.white,
+                              );
+                            } else {
+                              Get.snackbar(
+                                'Authentication Message',
+                                'Login Failed, Please try again',
+                                duration: const Duration(seconds: 2),
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
+                          });
                         }
                       },
                     ),

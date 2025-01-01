@@ -1,9 +1,12 @@
-import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:transpro/Presentation/authentication_screens/loginScreen.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({super.key});
+  CustomDrawer({super.key});
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +84,8 @@ class CustomDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('logout'),
             onTap: () {
-              Get.back();
+              _auth.signOut();
+              Get.to(LoginScreen());
             },
           ),
           const Divider(),
