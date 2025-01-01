@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../Contoller/driverFormvalidation/driverside_valadation.dart';
+import '../../validation/driverFormvalidation/driverside_valadation.dart';
 import 'reg_driverScreen2.dart';
 
 class RegDriverScreen extends StatelessWidget {
@@ -89,7 +89,7 @@ class RegDriverScreen extends StatelessWidget {
                         driversideValadation.validatePhoneNumber(value),
                     decoration: InputDecoration(
                       labelText: 'Phone Number',
-                      hintText: '0332-4145420',
+                      hintText: '03324145420',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
@@ -131,13 +131,13 @@ class RegDriverScreen extends StatelessWidget {
                             ));
                           }
                         },
-                        child: Text(
-                          "Next",
-                          style: TextStyle(color: Colors.white),
-                        ),
                         style: OutlinedButton.styleFrom(
                           alignment: Alignment.centerRight,
                           backgroundColor: Colors.orange,
+                        ),
+                        child: Text(
+                          "Next",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ],

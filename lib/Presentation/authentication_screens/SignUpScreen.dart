@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:transpro/Contoller/firebase_auth.dart/firebase_auth.dart';
 
-import '../../Contoller/form_validation/authenticationform_validation.dart';
+import '../../validation/form_validation/authenticationform_validation.dart';
 import '../../component/custom_button.dart';
 import 'loginScreen.dart';
 
@@ -53,11 +54,6 @@ class SignUpScreen extends StatelessWidget {
                       backgroundImage:
                           AssetImage("assets/splash_img/app_logo.jpeg"),
                       radius: 100,
-                      // child: Icon(
-                      //   Icons.person,
-                      //   size: 120,
-                      //   color: Colors.white,
-                      // ),
                     ),
                     const SizedBox(height: 10),
                     const Center(
@@ -141,8 +137,14 @@ class SignUpScreen extends StatelessWidget {
                             },
                           ),
                         ),
-                        validator: (value) => AuthenticationformValidation()
-                            .validatePassword(value),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Confirm Password is required";
+                          } else if (value != _passwordcontroller.text) {
+                            return "Passwords does not match!!!";
+                          }
+                          return null; // Validation passed
+                        },
                       ),
                     ),
                     const SizedBox(height: 40),
@@ -150,15 +152,28 @@ class SignUpScreen extends StatelessWidget {
                       text: "R E G I S T E R",
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
-                          Get.to(LoginScreen());
-                          Get.snackbar(
-                            'Authentication Message',
-                            'Your account has been created successfully',
-                            backgroundColor: Colors.green,
-                            colorText: Colors.white,
-                          );
+                          FirebaseAuthController()
+                              .registerWithEmailAndPassword(
+                                  _emailcontroller.text,
+                                  _passwordcontroller.text)
+                              .then((Value) {
+                            if (Value != null) {
+                              Get.to(LoginScreen());
+                              Get.snackbar(
+                                'Authentication Message',
+                                'Your account has been created successfully',
+                                backgroundColor: Colors.green,
+                                colorText: Colors.white,
+                              );
+                            } else {
+                              Get.snackbar(
+                                'Authentication Message',
+                                'Error in creating account',
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
+                          });
                         }
                       },
                     ),
