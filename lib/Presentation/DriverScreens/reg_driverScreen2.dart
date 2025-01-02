@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:transpro/Presentation/DriverScreens/driver_dashboard.dart';
+import 'package:transpro/component/custom_app_bar.dart';
 import 'package:transpro/component/custom_button.dart';
 
 class RegDriverScreen2 extends StatelessWidget {
@@ -12,18 +13,7 @@ class RegDriverScreen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.orange,
-        title: const Text(
-          'Driver Registration',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-      ),
+      appBar: CustomAppBar(title: "$name Give More Info"),
       body: Container(
         margin: const EdgeInsets.only(top: 20),
         child: Padding(
