@@ -11,7 +11,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   void navigateToHomeScreen() {
-    Get.to(LoginScreen());
+    Get.to(() => LoginScreen());
   }
 
   @override
@@ -23,21 +23,23 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            backgroundColor: Colors.grey[100],
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/splash_img/app_logo.jpeg",
-                    height: 150.0,
-                    width: 150.0,
-                  ),
-                  const Text("App running ..."),
-                ],
+      child: Scaffold(
+        backgroundColor: Colors.grey[200],
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/splash_img/app_logo.jpeg",
+                height: 150.0,
+                width: 150.0,
               ),
-            )));
+              const Text("App running ..."),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

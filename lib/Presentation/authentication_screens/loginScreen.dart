@@ -35,7 +35,7 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 100, bottom: 40),
+            margin: const EdgeInsets.only(top: 30, bottom: 0),
             padding: const EdgeInsets.all(16.0),
             child: Form(
               key: _formKey, // Assign the _formKey to the Form widget
@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                           AssetImage("assets/splash_img/app_logo.jpeg"),
                       radius: 100,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 30),
                     const Center(
                       child: Column(
                         children: [
