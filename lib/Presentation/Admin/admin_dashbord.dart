@@ -23,7 +23,6 @@ class AdminDashBoard extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            CustomButton(text: "Get Drivers Location", onPressed: () {}),
           ],
         ),
       ),
