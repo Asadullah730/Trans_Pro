@@ -37,4 +37,15 @@ class DriversideValadation {
       return null;
     }
   }
+
+  String? validateDriverCNIC(String? value) {
+    final cnicRegex = RegExp(r"^\d{5}-\d{7}-\d{1}$");
+    if (value == null || value.isEmpty) {
+      return 'Enter the CNIC number';
+    } else if (!cnicRegex.hasMatch(value)) {
+      return 'Enter a valid CNIC number (e.g., 32102-5799182-5)';
+    } else {
+      return null;
+    }
+  }
 }

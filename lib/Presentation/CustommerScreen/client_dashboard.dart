@@ -1,8 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:transpro/Model/ImagesModel.dart';
 import 'package:transpro/Presentation/DriverScreens/widgets/cus_drawer.dart';
 import 'package:transpro/component/custom_app_bar.dart';
+import 'package:transpro/component/custom_button.dart';
+
+import 'order_details_screen.dart';
 
 class ClientDashBoard extends StatelessWidget {
   final String? title;
@@ -44,7 +48,15 @@ class ClientDashBoard extends StatelessWidget {
                   },
                 );
               }).toList(),
-            )
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            CustomButton(
+                text: "Cargo Details",
+                onPressed: () {
+                  Get.to(() => OrderDetailsScreen());
+                })
           ],
         ),
       ),
