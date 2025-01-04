@@ -1,13 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:transpro/Contoller/cameraController.dart';
 import 'package:transpro/Presentation/HomeScreen.dart';
 import 'package:transpro/Presentation/authentication_screens/loginScreen.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({super.key});
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  String? img;
+  final CameraAccessController cameraAccessController =
+      Get.put(CameraAccessController());
+
+  final Rx<File?> imgpath = Rx<File?>(File('assets/splash_img/app_logo.jpeg'));
 
   @override
   Widget build(BuildContext context) {
@@ -25,30 +32,47 @@ class CustomDrawer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Stack(
-                      children: [
-                        const CircleAvatar(
-                          radius: 50,
-                          backgroundImage:
-                              AssetImage('assets/splash_img/app_logo.jpeg'),
-                        ),
-                        Positioned(
-                          top: 65,
-                          right: 0,
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.add_a_photo_rounded,
-                              color: Colors.white,
+                    Obx(
+                      () => Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundImage:
+                                cameraAccessController.imageFile.value != null
+                                    ? FileImage(
+                                        cameraAccessController.imageFile.value!)
+                                    : FileImage(imgpath.value!),
+                          ),
+                          Positioned(
+                            top: 65,
+                            right: 0,
+                            child: IconButton(
+                              onPressed: () {
+                                cameraAccessController
+                                    .pickImageFromGallery()
+                                    .then(
+                                  (value) {
+                                    imgpath.value =
+                                        cameraAccessController.imageFile.value;
+
+                                    print(
+                                        "IMAGE PATH :${cameraAccessController.imageFile.value as String}");
+                                  },
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.add_a_photo_rounded,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
                 const Text(
-                  'Trans Pro',
+                  'TransPro',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -84,8 +108,10 @@ class CustomDrawer extends StatelessWidget {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text('logout'),
+            title: const Text('Logout'),
             onTap: () {
+              Get.back();
+              Get.back();
               _auth.signOut();
               Get.to(LoginScreen());
             },

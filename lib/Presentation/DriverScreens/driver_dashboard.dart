@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:transpro/Presentation/DriverScreens/widgets/cus_drawer.dart';
+import 'package:transpro/component/cus_drawer.dart';
 
 class DriverDashboard extends StatelessWidget {
   const DriverDashboard({super.key});
