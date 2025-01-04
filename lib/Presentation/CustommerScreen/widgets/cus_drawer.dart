@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:transpro/Presentation/HomeScreen.dart';
 import 'package:transpro/Presentation/authentication_screens/loginScreen.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -61,6 +62,7 @@ class CustomDrawer extends StatelessWidget {
             title: const Text('Home'),
             onTap: () {
               Get.back();
+              Get.to(() => HomeScreen());
             },
           ),
           const Divider(),

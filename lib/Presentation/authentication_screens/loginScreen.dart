@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:transpro/Contoller/firebase_auth.dart/firebase_auth.dart';
+import 'package:transpro/Presentation/Admin/admin_dashbord.dart';
 import '../../validation/form_validation/authenticationform_validation.dart';
 import '../../component//custom_button.dart';
 import '../HomeScreen.dart';
@@ -121,29 +122,44 @@ class LoginScreen extends StatelessWidget {
                       text: "L O G I N",
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          FirebaseAuthController()
-                              .signInWithEmailAndPassword(_emailcontroller.text,
-                                  _passwordcontroller.text)
-                              .then((value) {
-                            if (value != null) {
-                              Get.to(const HomeScreen());
-                              Get.snackbar(
-                                'Authentication Message',
-                                'Login Successfully',
-                                duration: const Duration(seconds: 2),
-                                backgroundColor: Colors.purple,
-                                colorText: Colors.white,
-                              );
-                            } else {
-                              Get.snackbar(
-                                'Authentication Message',
-                                'Login Failed, Please try again',
-                                duration: const Duration(seconds: 2),
-                                backgroundColor: Colors.red,
-                                colorText: Colors.white,
-                              );
-                            }
-                          });
+                          if (_emailcontroller.text.toString() ==
+                                  "codebotx@gmail.com" &&
+                              _passwordcontroller.text.toString() ==
+                                  "codebotx") {
+                            Get.to(const AdminDashBoard());
+                            Get.snackbar(
+                              'Authentication Message',
+                              'Admin Login Successfully',
+                              duration: const Duration(seconds: 2),
+                              backgroundColor: Colors.purple,
+                              colorText: Colors.white,
+                            );
+                          } else {
+                            FirebaseAuthController()
+                                .signInWithEmailAndPassword(
+                                    _emailcontroller.text,
+                                    _passwordcontroller.text)
+                                .then((value) {
+                              if (value != null) {
+                                Get.to(const HomeScreen());
+                                Get.snackbar(
+                                  'Authentication Message',
+                                  'Login Successfully',
+                                  duration: const Duration(seconds: 2),
+                                  backgroundColor: Colors.purple,
+                                  colorText: Colors.white,
+                                );
+                              } else {
+                                Get.snackbar(
+                                  'Authentication Message',
+                                  'Login Failed, Please try again',
+                                  duration: const Duration(seconds: 2),
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                );
+                              }
+                            });
+                          }
                         }
                       },
                     ),

@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:transpro/Presentation/DriverScreens/driver_dashboard.dart';
+import 'package:transpro/Presentation/DriverScreens/widgets/cus_drawer.dart';
 import 'package:transpro/component/custom_app_bar.dart';
 import 'package:transpro/component/custom_button.dart';
-import 'package:transpro/validation/driverFormvalidation/driverside_valadation.dart';
+import 'package:transpro/validation/ClientFormValidation/clientSide_validation.dart';
 
-class RegDriverScreen2 extends StatelessWidget {
-  final String name;
-  RegDriverScreen2({required this.name, super.key});
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _date = TextEditingController();
-  final TextEditingController driverCnicController = TextEditingController();
+class OrderDetailsScreen extends StatelessWidget {
+  OrderDetailsScreen({super.key});
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController weightController = TextEditingController();
+  final TextEditingController logTypeController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController distFromController = TextEditingController();
+  final TextEditingController distToController = TextEditingController();
+  final TextEditingController labourController = TextEditingController();
+  String payment = '';
+  final List<String> paymentMethod = ["cash on delivery", "online payment"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "$name Give More Info"),
+      appBar: CustomAppBar(title: "Cargo Details"),
+      drawer: CustomDrawer(),
       body: Container(
         margin: const EdgeInsets.only(top: 20),
         child: Padding(
-          padding:
-              const EdgeInsets.only(top: 40.0, bottom: 20, left: 20, right: 20),
+          padding: const EdgeInsets.all(20.0),
           child: Form(
             key: _formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -30,7 +36,7 @@ class RegDriverScreen2 extends StatelessWidget {
                 children: [
                   const SizedBox(height: 20),
                   const Text(
-                    'More Information',
+                    'Cargo Details',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -40,9 +46,13 @@ class RegDriverScreen2 extends StatelessWidget {
                   const SizedBox(height: 40),
                   TextFormField(
                     keyboardType: TextInputType.number,
+                    controller: weightController,
+                    validator: (value) => value!.isEmpty
+                        ? 'Please enter the estimated weight'
+                        : null,
                     decoration: InputDecoration(
-                      labelText: 'AGE',
-                      hintText: 'Enter your Age',
+                      labelText: 'Estimated Weight',
+                      hintText: 'Estimated Weight of lodges ( Ton)',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
@@ -51,21 +61,16 @@ class RegDriverScreen2 extends StatelessWidget {
                         ),
                       ),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your Age';
-                      } else if (value.length > 2) {
-                        return 'Age must be greater than 18';
-                      }
-                      return null;
-                    },
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
-                    keyboardType: TextInputType.number,
+                    controller: logTypeController,
+                    validator: (value) => value!.isEmpty
+                        ? 'Please enter the type of lodge'
+                        : null,
                     decoration: InputDecoration(
-                      labelText: 'Licience Number',
-                      hintText: '12212233445563',
+                      labelText: 'Lodge Type',
+                      hintText: 'e.g. (Cloth, Furniture etc)',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
@@ -74,24 +79,16 @@ class RegDriverScreen2 extends StatelessWidget {
                         ),
                       ),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your Licience Number';
-                      } else if (value.length < 14) {
-                        return 'Licience Number must be 14 digits';
-                      }
-                      return null;
-                    },
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: driverCnicController,
+                    keyboardType: TextInputType.phone,
+                    controller: phoneController,
                     validator: (value) =>
-                        DriversideValadation().validateDriverCNIC(value),
+                        ClientsideValadation().validateClientPhoneNumber(value),
                     decoration: InputDecoration(
-                      labelText: 'CNIC Number',
-                      hintText: '32102-5799182-5',
+                      labelText: 'Phone Number',
+                      hintText: '03343492634',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
@@ -103,45 +100,13 @@ class RegDriverScreen2 extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
-                    controller: _date,
+                    controller: distFromController,
+                    validator: (value) => value!.isEmpty
+                        ? 'Please enter the departure location'
+                        : null,
                     decoration: InputDecoration(
-                      labelText: 'Licence Expiry Date',
-                      hintText: 'DD/MM/YYYY',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Colors.orange,
-                          width: 2,
-                        ),
-                      ),
-                      suffixIcon: const Icon(Icons.calendar_today,
-                          color: Colors.orange),
-                    ),
-                    readOnly: true,
-                    onTap: () async {
-                      final DateTime? picked = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2025),
-                        lastDate: DateTime(2050),
-                      );
-                      if (picked != null) {
-                        _date.text =
-                            "${picked.day}/${picked.month}/${picked.year}";
-                      }
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select the expiry date';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Vhecial Number',
-                      hintText: 'DGL 131',
+                      labelText: 'Departure',
+                      hintText: 'Enter location which is in Map.',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
@@ -150,21 +115,35 @@ class RegDriverScreen2 extends StatelessWidget {
                         ),
                       ),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your Vhecial Number';
-                      } else if (value.length < 6) {
-                        return 'Vhecial Number must be 6 digits';
-                      }
-                      return null;
-                    },
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
+                    controller: distToController,
+                    validator: (value) => value!.isEmpty
+                        ? 'Please enter the destination location'
+                        : null,
+                    decoration: InputDecoration(
+                      labelText: 'Destination',
+                      hintText: 'Enter location which is in Map.',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: Colors.orange,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: labourController,
+                    validator: (value) => value!.isEmpty
+                        ? 'Please enter the number of labours'
+                        : null,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: 'Weight Capacity',
-                      hintText: '10 Ton',
+                      labelText: 'Labour',
+                      hintText: 'Enter no.of Lobours (if needed).',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
@@ -173,36 +152,56 @@ class RegDriverScreen2 extends StatelessWidget {
                         ),
                       ),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your Weight Capacity';
-                      } else if (value.length < 2) {
-                        return 'Weight Capacity must be 2 digits';
-                      }
-                      return null;
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Payment Method',
+                      hintText: 'Select payment Method',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: Colors.orange,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                    items: paymentMethod.map((payMethod) {
+                      return DropdownMenuItem(
+                        child: Text(payMethod),
+                        value: payMethod,
+                      );
+                    }).toList(),
+                    validator: (value) =>
+                        value == null ? 'Please select Payment Method' : null,
+                    onChanged: (value) {
+                      payment = value!;
                     },
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   CustomButton(
-                    text: "R E G I S T E R",
+                    text: "C O N F I R M  CARGO",
                     onPressed: () {
                       Get.defaultDialog(
-                        title: "Information Check",
+                        title: "Confirm Order Details",
                         titlePadding: const EdgeInsets.only(top: 10),
-                        middleText: "Are you sure you want to register?",
+                        middleText:
+                            "All Details of Order are correct? press Yes to confirm",
                         contentPadding: const EdgeInsets.only(top: 0),
                         textConfirm: "Yes",
-                        textCancel: "cancel",
+                        textCancel: "No",
                         confirm: OutlinedButton(
                             onPressed: () {
                               Get.back();
                               if (_formKey.currentState!.validate()) {
-                                Get.snackbar(
-                                    "Success", "$name Registered Successfully",
+                                Get.snackbar("Success",
+                                    "We send the request to the driver, contact you soon",
                                     backgroundColor: Colors.green);
-                                Get.to(() => const DriverDashboard());
+                                Get.to(() {});
                               } else {
                                 Get.snackbar(
                                     "Error", "Please fill all the fields");
@@ -210,18 +209,18 @@ class RegDriverScreen2 extends StatelessWidget {
                               }
                             },
                             child: const Text(
-                              "Ok",
+                              "Yes",
                               style: TextStyle(
-                                  color: Colors.red,
+                                  color: Colors.orange,
                                   fontWeight: FontWeight.bold),
                             )),
                         cancel: OutlinedButton(
                             onPressed: () {
                               Get.back();
                             },
-                            child: const Text("Cancel",
+                            child: const Text("No",
                                 style: TextStyle(
-                                    color: Colors.red,
+                                    color: Colors.orange,
                                     fontWeight: FontWeight.bold))),
                       );
                     },

@@ -13,8 +13,7 @@ class CustommerRegScreen extends StatelessWidget {
   final TextEditingController cusPhoneController = TextEditingController();
   final TextEditingController cusAddressController = TextEditingController();
   final TextEditingController cusFatherNameController = TextEditingController();
-  final TextEditingController cusNationalityController =
-      TextEditingController();
+  final TextEditingController cusNationalityController = TextEditingController();
   final TextEditingController cusCnicController = TextEditingController();
   final TextEditingController cusGenderController = TextEditingController();
   String _gender = '';
