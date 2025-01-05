@@ -1,6 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:transpro/Presentation/DriverScreens/widgets/cus_drawer.dart';
+import 'package:transpro/component/cus_drawer.dart';
 import 'package:transpro/component/custom_app_bar.dart';
 import 'package:transpro/component/custom_button.dart';
 import 'package:transpro/validation/ClientFormValidation/clientSide_validation.dart';
@@ -14,6 +15,7 @@ class OrderDetailsScreen extends StatelessWidget {
   final TextEditingController distFromController = TextEditingController();
   final TextEditingController distToController = TextEditingController();
   final TextEditingController labourController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
   String payment = '';
   final List<String> paymentMethod = ["cash on delivery", "online payment"];
 
@@ -105,7 +107,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         ? 'Please enter the departure location'
                         : null,
                     decoration: InputDecoration(
-                      labelText: 'Departure',
+                      labelText: 'Source',
                       hintText: 'Enter location which is in Map.',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -144,6 +146,25 @@ class OrderDetailsScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: 'Labour',
                       hintText: 'Enter no.of Lobours (if needed).',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: Colors.orange,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: priceController,
+                    validator: (value) => value!.isEmpty
+                        ? 'Please enter the number of labours'
+                        : null,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Offer Price',
+                      hintText: 'how much you offer for this Trip?',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
@@ -198,9 +219,13 @@ class OrderDetailsScreen extends StatelessWidget {
                             onPressed: () {
                               Get.back();
                               if (_formKey.currentState!.validate()) {
-                                Get.snackbar("Success",
-                                    "We send the request to the driver, contact you soon",
-                                    backgroundColor: Colors.green);
+                                Get.snackbar(
+                                  "Success Message",
+                                  "We proceed your Request, contact you soon",
+                                );
+                                if (kDebugMode) {
+                                  print("PAYMENT METHOD: ${payment}");
+                                }
                                 Get.to(() {});
                               } else {
                                 Get.snackbar(

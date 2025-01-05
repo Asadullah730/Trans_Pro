@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:transpro/Presentation/DriverScreens/widgets/cus_drawer.dart';
+import 'package:transpro/component/cus_drawer.dart';
 import 'package:transpro/component/custom_app_bar.dart';
 import 'package:transpro/component/custom_button.dart';
 
