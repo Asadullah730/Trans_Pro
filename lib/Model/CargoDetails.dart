@@ -1,26 +1,26 @@
-class CargoDetails {
-  String? weight;
+class CargoDetailsModel {
+  double? weight;
   String? lodgeType;
-  String? phoneNumber;
-  String? source;
-  String? destination;
-  String? offerPrice;
-  String? labour;
+  String phoneNumber;
+  String source;
+  String destination;
+  double? offerPrice;
+  int? labour;
   String? paymentMethod;
 
-  CargoDetails({
+  CargoDetailsModel({
     this.weight,
     this.lodgeType,
-    this.phoneNumber,
-    this.source,
-    this.destination,
+    required this.phoneNumber,
+    required this.source,
+    required this.destination,
     this.offerPrice,
     this.labour,
     this.paymentMethod,
   });
 
-  factory CargoDetails.fromJson(Map<String, dynamic> json) {
-    return CargoDetails(
+  factory CargoDetailsModel.fromJson(Map<String, dynamic> json) {
+    return CargoDetailsModel(
       weight: json['weight'],
       lodgeType: json['cargoType'],
       phoneNumber: json['phoneNumber'],

@@ -126,7 +126,7 @@ class LoginScreen extends StatelessWidget {
                                   "codebotx@gmail.com" &&
                               _passwordcontroller.text.toString() ==
                                   "codebotx") {
-                            Get.to(const AdminDashBoard());
+                            Get.to(AdminDashBoard());
                             Get.snackbar(
                               'Authentication Message',
                               'Admin Login Successfully',
