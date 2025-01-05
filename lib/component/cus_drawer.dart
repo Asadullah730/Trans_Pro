@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:transpro/Contoller/cameraController.dart';
+import 'package:transpro/Contoller/GetXControllers/cameraController.dart';
 import 'package:transpro/Presentation/HomeScreen.dart';
 import 'package:transpro/Presentation/authentication_screens/loginScreen.dart';
 
