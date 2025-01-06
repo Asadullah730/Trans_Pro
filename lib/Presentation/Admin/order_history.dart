@@ -30,8 +30,7 @@ class OrderHistory extends StatelessWidget {
               child: ListTile(
                 title: const Text(
                   "Details: Complete Cargo Details ",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 15),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

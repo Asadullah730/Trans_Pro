@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Drivermodel {
   String? name;
   String? email;
@@ -23,33 +25,37 @@ class Drivermodel {
     this.weightCapiacity,
   });
 
-  factory Drivermodel.fromJson(Map<String, dynamic> json) {
+  factory Drivermodel.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
     return Drivermodel(
-      name: json['name'],
-      email: json['email'],
-      phone: json['phone'],
-      address: json['address'],
-      licenseNumber: json['licenseNumber'],
-      cnic: json['cnic'],
-      licenseexpiry: json['licenseexpiry'],
-      age: json['age'],
-      vhecialNumber: json['vhecialNumber'],
-      weightCapiacity: json['weightCapiacity'],
+      name: data?['name'],
+      email: data?['email'],
+      phone: data?['phone'],
+      address: data?['address'],
+      licenseNumber: data?['licenseNumber'],
+      cnic: data?['cnic'],
+      licenseexpiry: data?['licenseexpiry'],
+      age: data?['age'],
+      vhecialNumber: data?['vhecialNumber'],
+      weightCapiacity: data?['weightCapiacity'],
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestore() {
     return {
-      'name': name,
-      'email': email,
-      'phone': phone,
-      'address': address,
-      'licenseNumber': licenseNumber,
-      'cnic': cnic,
-      'licenseexpiry': licenseexpiry,
-      'age': age,
-      'vhecialNumber': vhecialNumber,
-      'weightCapiacity': weightCapiacity,
+      if (name != null) 'name': name,
+      if (email != null) 'email': email,
+      if (phone != null) 'phone': phone,
+      if (address != null) 'address': address,
+      if (licenseNumber != null) 'licenseNumber': licenseNumber,
+      if (cnic != null) 'cnic': cnic,
+      if (licenseexpiry != null) 'licenseexpiry': licenseexpiry,
+      if (age != null) 'age': age,
+      if (vhecialNumber != null) 'vhecialNumber': vhecialNumber,
+      if (weightCapiacity != null) 'weightCapiacity': weightCapiacity,
     };
   }
 }

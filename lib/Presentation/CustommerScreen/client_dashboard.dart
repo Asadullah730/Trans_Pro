@@ -21,20 +21,20 @@ class ClientDashBoard extends StatelessWidget {
       appBar: CustomAppBar(title: "Welcome $title "),
       drawer: CustomDrawer(),
       body: Container(
-        margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+        margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
         child: Column(
           children: [
             CarouselSlider(
               options: CarouselOptions(
                 autoPlay: true,
-                autoPlayInterval: Duration(seconds: 2),
+                autoPlayInterval: const Duration(seconds: 2),
                 enlargeCenterPage: false,
                 viewportFraction: 1,
                 height: 250,
                 aspectRatio: 16 / 9,
                 animateToClosest: true,
                 enableInfiniteScroll: true,
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
                 autoPlayCurve: Curves.fastOutSlowIn,
               ),
               items: path.imgPath.map((path) {
@@ -49,7 +49,7 @@ class ClientDashBoard extends StatelessWidget {
                 );
               }).toList(),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             CustomButton(

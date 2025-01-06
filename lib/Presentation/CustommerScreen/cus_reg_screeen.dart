@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:transpro/FireStore/custommerCollection.dart';
+import 'package:transpro/FireStore/driverCollection.dart';
+import 'package:transpro/Model/CustommerModel.dart';
+import 'package:transpro/Model/DriverModel.dart';
 import 'package:transpro/Presentation/CustommerScreen/client_dashboard.dart';
 import 'package:transpro/component/custom_app_bar.dart';
 import 'package:transpro/component/custom_button.dart';
@@ -13,11 +17,13 @@ class CustommerRegScreen extends StatelessWidget {
   final TextEditingController cusPhoneController = TextEditingController();
   final TextEditingController cusAddressController = TextEditingController();
   final TextEditingController cusFatherNameController = TextEditingController();
-  final TextEditingController cusNationalityController = TextEditingController();
+  final TextEditingController cusNationalityController =
+      TextEditingController();
   final TextEditingController cusCnicController = TextEditingController();
   final TextEditingController cusGenderController = TextEditingController();
+
   String _gender = '';
-  List<String> _genders = ['Male', 'Female'];
+  final List<String> _genders = ['Male', 'Female'];
   CustommerRegScreen({super.key});
 
   @override
@@ -185,7 +191,7 @@ class CustommerRegScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   DropdownButtonFormField(
@@ -202,8 +208,8 @@ class CustommerRegScreen extends StatelessWidget {
                     ),
                     items: _genders.map((gender) {
                       return DropdownMenuItem(
-                        child: Text(gender),
                         value: gender,
+                        child: Text(gender),
                       );
                     }).toList(),
                     validator: (value) =>
@@ -229,12 +235,31 @@ class CustommerRegScreen extends StatelessWidget {
                             onPressed: () {
                               Get.back();
                               if (_formKey.currentState!.validate()) {
-                                Get.snackbar("Success",
-                                    "${cusNameController.text} Registered Successfully",
-                                    backgroundColor: Colors.green);
-                                Get.to(() => ClientDashBoard(
-                                      title: cusNameController.text,
-                                    ));
+                                final custommer = ClientModel(
+                                  name: cusNameController.text.trim(),
+                                  fatherName:
+                                      cusFatherNameController.text.trim(),
+                                  address: cusAddressController.text.trim(),
+                                  cnic: cusCnicController.text.trim(),
+                                  email: cusEmailController.text.trim(),
+                                  gender: _gender,
+                                  nationality:
+                                      cusNationalityController.text.trim(),
+                                  phoneNumber: cusPhoneController.text.trim(),
+                                );
+
+                                CustommerCollection()
+                                    .saveCustommerData(
+                                  custommer,
+                                  Get.snackbar("Success",
+                                      "${cusNameController.text.trim()} Registered Successfully",
+                                      backgroundColor: Colors.green),
+                                )
+                                    .then((value) {
+                                  Get.to(() => ClientDashBoard(
+                                        title: '',
+                                      ));
+                                });
                               } else {
                                 Get.snackbar(
                                     "Error", "Please fill all the fields");

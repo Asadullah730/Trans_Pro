@@ -1,6 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:transpro/FireStore/driverCollection.dart';
+import 'package:transpro/FireStore/orderCollection.dart';
+import 'package:transpro/Model/CargoDetails.dart';
+import 'package:transpro/Model/DriverModel.dart';
+import 'package:transpro/Presentation/Admin/notification_screen.dart';
 import 'package:transpro/component/cus_drawer.dart';
 import 'package:transpro/component/custom_app_bar.dart';
 import 'package:transpro/component/custom_button.dart';
@@ -163,7 +168,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         : null,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: 'Offer Price',
+                      labelText: ' Offer Fare',
                       hintText: 'how much you offer for this Trip?',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -174,7 +179,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   DropdownButtonFormField(
@@ -191,8 +196,8 @@ class OrderDetailsScreen extends StatelessWidget {
                     ),
                     items: paymentMethod.map((payMethod) {
                       return DropdownMenuItem(
-                        child: Text(payMethod),
                         value: payMethod,
+                        child: Text(payMethod),
                       );
                     }).toList(),
                     validator: (value) =>
@@ -219,14 +224,31 @@ class OrderDetailsScreen extends StatelessWidget {
                             onPressed: () {
                               Get.back();
                               if (_formKey.currentState!.validate()) {
-                                Get.snackbar(
-                                  "Success Message",
-                                  "We proceed your Request, contact you soon",
+                                final cargo = CargoDetailsModel(
+                                  phoneNumber: phoneController.text.trim(),
+                                  source: distFromController.text.trim(),
+                                  destination: distToController.text.trim(),
+                                  labour: int.tryParse(
+                                          labourController.text.trim()) ??
+                                      0,
+                                  lodgeType: logTypeController.text.trim(),
+                                  offerPrice: double.tryParse(
+                                      priceController.text.trim()),
+                                  paymentMethod: payment,
+                                  weight: double.tryParse(
+                                      weightController.text.trim()),
                                 );
-                                if (kDebugMode) {
-                                  print("PAYMENT METHOD: ${payment}");
-                                }
-                                Get.to(() {});
+
+                                Ordercollection()
+                                    .saveOrders(
+                                  cargo,
+                                  Get.snackbar("Success",
+                                      "Your Request Sent Successfully,Contact you soon",
+                                      backgroundColor: Colors.green),
+                                )
+                                    .then((value) {
+                                  // Get.to(() =>  NotificationScreen());
+                                });
                               } else {
                                 Get.snackbar(
                                     "Error", "Please fill all the fields");

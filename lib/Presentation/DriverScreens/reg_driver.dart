@@ -125,17 +125,21 @@ class RegDriverScreen extends StatelessWidget {
                       OutlinedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            Get.to(RegDriverScreen2(
-                              name:
-                                  nameController.text.toString().toUpperCase(),
-                            ));
+                            Get.to(
+                              () => RegDriverScreen2(
+                                name: nameController.text.trim(),
+                                address: addressController.text.trim(),
+                                email: emailController.text.trim(),
+                                phone: phoneController.text.trim(),
+                              ),
+                            );
                           }
                         },
                         style: OutlinedButton.styleFrom(
                           alignment: Alignment.centerRight,
                           backgroundColor: Colors.orange,
                         ),
-                        child: Text(
+                        child: const Text(
                           "Next",
                           style: TextStyle(color: Colors.white),
                         ),

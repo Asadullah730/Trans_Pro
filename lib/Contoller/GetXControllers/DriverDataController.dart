@@ -1,42 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:transpro/Model/DriverModel.dart';
 
 class DriverController extends GetxController {
-  // Observable list of drivers
-  var regDriver = <Drivermodel>[
-    Drivermodel(
-        name: "Asad Brohi",
-        age: 20,
-        email: "asad@gmail.com",
-        address: "DG KHAN",
-        phone: "03343492634",
-        weightCapiacity: 40,
-        vhecialNumber: "DGL 131"),
-    Drivermodel(
-        name: "USMAN Khan",
-        age: 40,
-        email: "usman@gmail.com",
-        address: "DG KHAN",
-        phone: "03343492634",
-        weightCapiacity: 40,
-        vhecialNumber: "DGK 131"),
-    Drivermodel(
-        name: "Muhammad Haleem",
-        age: 20,
-        email: "haleemdhakan@gmail.com",
-        address: "DG KHAN",
-        phone: "03343492634",
-        weightCapiacity: 40,
-        vhecialNumber: "DBL 135"),
-    Drivermodel(
-        name: "HAMZA",
-        age: 20,
-        email: "hamza@gmail.com",
-        address: "DG KHAN",
-        phone: "03343492634",
-        weightCapiacity: 40,
-        vhecialNumber: "ISL 136")
-  ].obs;
+  var regDriver = <Map<String, dynamic>>[].obs;
+  var isLoading = false.obs;
+  FirebaseFirestore database = FirebaseFirestore.instance;
+  Future<void> fetchDrivers() async {
+    isLoading.value = true;
+    try {
+      QuerySnapshot querySnapshot = await database.collection('Drivers').get();
+      if (querySnapshot.docs.isNotEmpty) {
+        regDriver.value = querySnapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList();
+      } else {
+        regDriver.clear();
+        Get.snackbar('No Data', 'No drivers found in the database.');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to retrieve drivers: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   // Function to remove a driver by index
   void removeDriver(int index) {

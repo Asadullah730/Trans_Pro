@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:transpro/Contoller/GetXControllers/cameraController.dart';
 import 'package:transpro/Presentation/HomeScreen.dart';
+import 'package:transpro/Presentation/aboutUs.dart';
 import 'package:transpro/Presentation/authentication_screens/loginScreen.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -86,7 +87,7 @@ class CustomDrawer extends StatelessWidget {
             title: const Text('Home'),
             onTap: () {
               Get.back();
-              Get.to(() => HomeScreen());
+              Get.to(() => const HomeScreen());
             },
           ),
           const Divider(),
@@ -94,7 +95,7 @@ class CustomDrawer extends StatelessWidget {
             leading: const Icon(Icons.person),
             title: const Text('About Us'),
             onTap: () {
-              Get.back();
+              Get.to(() => AboutUsPage());
             },
           ),
           const Divider(),
@@ -102,7 +103,7 @@ class CustomDrawer extends StatelessWidget {
             leading: const Icon(Icons.contact_mail),
             title: const Text('Contact Us'),
             onTap: () {
-              Get.back();
+              Get.to(() => AboutUsPage());
             },
           ),
           const Divider(),
@@ -112,7 +113,14 @@ class CustomDrawer extends StatelessWidget {
             onTap: () {
               Get.back();
               Get.back();
-              _auth.signOut();
+              _auth
+                  .signOut()
+                  .then(
+                    (value) => Get.to(LoginScreen()),
+                  )
+                  .onError((StackTrace, error) {
+                Get.snackbar('Logout Error', error.toString());
+              });
               Get.to(LoginScreen());
             },
           ),

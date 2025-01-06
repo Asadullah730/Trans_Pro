@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:transpro/FireStore/driverCollection.dart';
+import 'package:transpro/Model/DriverModel.dart';
 import 'package:transpro/Presentation/DriverScreens/driver_dashboard.dart';
 import 'package:transpro/component/custom_app_bar.dart';
 import 'package:transpro/component/custom_button.dart';
@@ -7,10 +9,24 @@ import 'package:transpro/validation/driverFormvalidation/driverside_valadation.d
 
 class RegDriverScreen2 extends StatelessWidget {
   final String name;
-  RegDriverScreen2({required this.name, super.key});
+  final String email;
+  final String address;
+  final String phone;
+  RegDriverScreen2(
+      {required this.name,
+      super.key,
+      required this.email,
+      required this.address,
+      required this.phone});
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _date = TextEditingController();
+  final TextEditingController date = TextEditingController();
   final TextEditingController driverCnicController = TextEditingController();
+  final TextEditingController driverAgeController = TextEditingController();
+  final TextEditingController driverLicNumController = TextEditingController();
+  final TextEditingController driverVhecalNumController =
+      TextEditingController();
+  final TextEditingController driverWeightController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +55,7 @@ class RegDriverScreen2 extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                   TextFormField(
+                    controller: driverAgeController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'AGE',
@@ -62,6 +79,7 @@ class RegDriverScreen2 extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
+                    controller: driverLicNumController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'Licience Number',
@@ -103,7 +121,7 @@ class RegDriverScreen2 extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
-                    controller: _date,
+                    controller: date,
                     decoration: InputDecoration(
                       labelText: 'Licence Expiry Date',
                       hintText: 'DD/MM/YYYY',
@@ -126,7 +144,7 @@ class RegDriverScreen2 extends StatelessWidget {
                         lastDate: DateTime(2050),
                       );
                       if (picked != null) {
-                        _date.text =
+                        date.text =
                             "${picked.day}/${picked.month}/${picked.year}";
                       }
                     },
@@ -139,6 +157,7 @@ class RegDriverScreen2 extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
+                    controller: driverVhecalNumController,
                     decoration: InputDecoration(
                       labelText: 'Vhecial Number',
                       hintText: 'DGL 131',
@@ -161,6 +180,7 @@ class RegDriverScreen2 extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
+                    controller: driverWeightController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'Weight Capacity',
@@ -177,7 +197,7 @@ class RegDriverScreen2 extends StatelessWidget {
                       if (value!.isEmpty) {
                         return 'Please enter your Weight Capacity';
                       } else if (value.length < 2) {
-                        return 'Weight Capacity must be 2 digits';
+                        return 'Weight Capacity must be greater than 10 ton';
                       }
                       return null;
                     },
@@ -199,10 +219,35 @@ class RegDriverScreen2 extends StatelessWidget {
                             onPressed: () {
                               Get.back();
                               if (_formKey.currentState!.validate()) {
-                                Get.snackbar(
-                                    "Success", "$name Registered Successfully",
-                                    backgroundColor: Colors.green);
-                                Get.to(() => const DriverDashboard());
+                                final driver = Drivermodel(
+                                  name: name,
+                                  age: int.tryParse(
+                                          driverAgeController.text.trim()) ??
+                                      0,
+                                  address: address,
+                                  email: email,
+                                  phone: phone,
+                                  cnic: driverCnicController.text.trim(),
+                                  licenseNumber:
+                                      driverLicNumController.text.trim(),
+                                  licenseexpiry: date.text.trim(),
+                                  vhecialNumber:
+                                      driverVhecalNumController.text.trim(),
+                                  weightCapiacity: int.tryParse(
+                                          driverWeightController.text.trim()) ??
+                                      0,
+                                );
+
+                                Drivercollection()
+                                    .saveDriverData(
+                                  driver,
+                                  Get.snackbar("Success",
+                                      "$name Registered Successfully",
+                                      backgroundColor: Colors.green),
+                                )
+                                    .then((value) {
+                                  Get.to(() => DriverDashboard());
+                                });
                               } else {
                                 Get.snackbar(
                                     "Error", "Please fill all the fields");
