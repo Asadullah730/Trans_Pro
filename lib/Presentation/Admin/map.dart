@@ -92,7 +92,7 @@ class _MapScreenState extends State<MapScreen> {
         .then((value) {})
         .onError((error, StackTrace) async {
       await Geolocator.requestPermission();
-      print("Error : ${error}");
+      print("Error : $error");
     });
     return await Geolocator.getCurrentPosition();
   }
@@ -153,7 +153,7 @@ class _MapScreenState extends State<MapScreen> {
                         }
 
                         markers.add(Marker(
-                          markerId: MarkerId('current loc'),
+                          markerId: const MarkerId('current loc'),
                           position:
                               LatLng(currentloc.latitude, currentloc.longitude),
                           infoWindow:

@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {
               Get.changeTheme(ThemeData.light());
             },
-            icon: Icon(Icons.wb_sunny, color: Colors.white),
+            icon: const Icon(Icons.wb_sunny, color: Colors.white),
           ),
           IconButton(
             onPressed: () {

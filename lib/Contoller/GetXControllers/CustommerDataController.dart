@@ -1,41 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:transpro/Model/CustommerModel.dart';
 
 class CustommerDataController extends GetxController {
-  var regCustommer = <ClientModel>[
-    ClientModel(
-        name: "Asad Brohi",
-        fatherName: "Nabi Bakhsh",
-        address: "DG Khan",
-        email: "asadkhan@gmail.com",
-        gender: "Male",
-        nationality: "Pakistani",
-        phoneNumber: "03343492634"),
-    ClientModel(
-        name: "Haleem Dhakan😂",
-        fatherName: "ABC ",
-        address: "Kohat",
-        email: "asadkhan@gmail.com",
-        gender: "Male",
-        nationality: "Pakistani",
-        phoneNumber: "03343492634"),
-    ClientModel(
-        name: "Umer Charsi😂",
-        fatherName: "Sibghat Ullah",
-        address: "Lahore",
-        email: "asadkhan@gmail.com",
-        gender: "Male",
-        nationality: "Pakistani",
-        phoneNumber: "03343492634"),
-    ClientModel(
-        name: "Aarij Powedri😂",
-        fatherName: "Azeem ",
-        address: "Rawalpindi",
-        email: "asadkhan@gmail.com",
-        gender: "Male",
-        nationality: "Pakistani",
-        phoneNumber: "03343492634")
-  ].obs;
+  var regCustommer = <Map<String, dynamic>>[].obs;
+  var isLoading = false.obs;
+  FirebaseFirestore database = FirebaseFirestore.instance;
+  Future<void> fetchCustommer() async {
+    isLoading.value = true;
+    try {
+      QuerySnapshot querySnapshot =
+          await database.collection('Custommer').get();
+      if (querySnapshot.docs.isNotEmpty) {
+        regCustommer.value = querySnapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList();
+      } else {
+        regCustommer.clear();
+        Get.snackbar('No Data', 'No Custommer found in the database.');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to retrieve drivers: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   void removeCustommer(int index) {
     regCustommer.removeAt(index);
   }

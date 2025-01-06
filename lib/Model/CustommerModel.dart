@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ClientModel {
   String? name;
   String? fatherName;
@@ -19,29 +21,32 @@ class ClientModel {
     this.gender,
   });
 
-  factory ClientModel.fromJson(Map<String, dynamic> json) {
+  factory ClientModel.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
     return ClientModel(
-      name: json['name'],
-      fatherName: json['fatherName'],
-      nationality: json['nationality'],
-      cnic: json['cnic'],
-      email: json['email'],
-      phoneNumber: json['phoneNumber'],
-      address: json['address'],
-      gender: json['gender'],
-    );
+        name: data?['name'],
+        fatherName: data?['fatherName'],
+        email: data?['email'],
+        phoneNumber: data?['phone'],
+        address: data?['address'],
+        cnic: data?['cnic'],
+        gender: data?['gender'],
+        nationality: data?['nationality']);
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestore() {
     return {
-      'name': name,
-      'fatherName': fatherName,
-      'nationality': nationality,
-      'cnic': cnic,
-      'email': email,
-      'phoneNumber': phoneNumber,
-      'address': address,
-      'gender': gender,
+      if (name != null) 'name': name,
+      if (fatherName != null) 'fatherName': email,
+      if (email != null) 'email': email,
+      if (phoneNumber != null) 'phoneNumber': phoneNumber,
+      if (address != null) 'address': address,
+      if (cnic != null) 'cnic': cnic,
+      if (gender != null) 'gender': gender,
+      if (nationality != null) 'nationality': nationality,
     };
   }
 }

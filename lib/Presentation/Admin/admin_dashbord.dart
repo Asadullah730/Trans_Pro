@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:transpro/Model/CargoDetails.dart';
@@ -5,11 +6,13 @@ import 'package:transpro/Presentation/Admin/driverData.dart';
 import 'package:transpro/Presentation/Admin/notification_screen.dart';
 import 'package:transpro/Presentation/Admin/order_history.dart';
 import 'package:transpro/Presentation/Admin/reg_custommerData.dart';
+import 'package:transpro/Presentation/authentication_screens/loginScreen.dart';
 import 'package:transpro/component/cus_drawer.dart';
 import 'package:transpro/component/custom_button.dart';
 
 class AdminDashBoard extends StatelessWidget {
   List<CargoDetailsModel>? cargoHistory = [];
+  FirebaseAuth auth = FirebaseAuth.instance;
   AdminDashBoard({super.key, this.cargoHistory});
 
   @override
@@ -31,12 +34,25 @@ class AdminDashBoard extends StatelessWidget {
             onPressed: () {
               Get.to(() => NotificationScreen());
             },
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(
+              Icons.notifications,
+              color: Colors.white,
+            ),
           ),
-          SizedBox(width: 16),
+          IconButton(
+            onPressed: () {
+              auth.signOut().then((_) {
+                Get.to(() => LoginScreen());
+              });
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 16),
         ],
       ),
-      drawer: CustomDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
