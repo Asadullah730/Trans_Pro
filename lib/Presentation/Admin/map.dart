@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 class MapScreen extends StatefulWidget {
   final String distfrom;
   final String distto;
+
   const MapScreen({super.key, required this.distfrom, required this.distto});
 
   @override
