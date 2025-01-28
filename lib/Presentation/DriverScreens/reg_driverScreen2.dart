@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:transpro/FireStore/driverCollection.dart';
 import 'package:transpro/Model/DriverModel.dart';
 import 'package:transpro/Presentation/DriverScreens/driver_dashboard.dart';
+import 'package:transpro/component/cus_drawer.dart';
 import 'package:transpro/component/custom_app_bar.dart';
 import 'package:transpro/component/custom_button.dart';
 import 'package:transpro/validation/driverFormvalidation/driverside_valadation.dart';
@@ -31,6 +32,7 @@ class RegDriverScreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "$name Give More Info"),
+      drawer: CustomDrawer(),
       body: Container(
         margin: const EdgeInsets.only(top: 20),
         child: Padding(

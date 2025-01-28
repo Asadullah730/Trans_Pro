@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:transpro/Contoller/GetXControllers/CargoDetailsController.dart';
-import 'package:transpro/Model/CargoDetails.dart';
 import 'package:transpro/Presentation/Admin/admin_dashbord.dart';
 import 'package:transpro/Presentation/Admin/map.dart';
 
@@ -15,7 +14,13 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen width and height
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Fetch data
     controlsDetails.fetchOrders();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
@@ -45,79 +50,99 @@ class NotificationScreen extends StatelessWidget {
             return Card(
               elevation: 5,
               shadowColor: Colors.orange[200],
-              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-              child: ListTile(
-                title: const Text(
-                  "Details: Complete Cargo Details",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                ),
-                subtitle: Column(
+              margin: EdgeInsets.symmetric(
+                vertical: screenHeight * 0.01,
+                horizontal: screenWidth * 0.05,
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(screenWidth * 0.03),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("source :${cargo['source'] ?? 'Unknown'}"),
-                    Text("destination:${cargo['destination'] ?? 'Unknown'}"),
-                    Text("labour : ${cargo['labour'] ?? 'Unknown'}"),
-                    Text("lodgeType :${cargo['lodgeType'] ?? 'Unknown'}"),
-                    Text("offerPrice :${cargo['offerPrice'] ?? 'Unknown'}"),
+                    const Text(
+                      "Details: Complete Cargo Details",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    SizedBox(height: screenHeight * 0.01),
+                    Text("Source: ${cargo['source'] ?? 'Unknown'}"),
+                    Text("Destination: ${cargo['destination'] ?? 'Unknown'}"),
+                    Text("Labour: ${cargo['labour'] ?? 'Unknown'}"),
+                    Text("Lodge Type: ${cargo['lodgeType'] ?? 'Unknown'}"),
+                    Text("Offer Price: ${cargo['offerPrice'] ?? 'Unknown'}"),
                     Text(
-                        "paymentMethod :${cargo['paymentMethod'] ?? 'Unknown'}"),
-                    Text("weight Capacity:${cargo['weight'] ?? '0'} Ton"),
-                    Text("phone :${cargo['phoneNumber'] ?? 'Unknown'}"),
+                        "Payment Method: ${cargo['paymentMethod'] ?? 'Unknown'}"),
+                    Text("Weight Capacity: ${cargo['weight'] ?? '0'} Ton"),
+                    Text("Phone: ${cargo['phoneNumber'] ?? 'Unknown'}"),
+                    SizedBox(height: screenHeight * 0.02),
                     Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          OutlinedButton(
-                            onPressed: () {
-                              Get.to(() => MapScreen(
-                                    distfrom: cargo['source'],
-                                    distto: cargo['destination'],
-                                  ));
-                            },
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStateProperty.all<Color>(Colors.orange),
-                              foregroundColor:
-                                  WidgetStateProperty.all<Color>(Colors.white),
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.to(() => MapScreen(
+                                  distfrom: cargo['source'],
+                                  distto: cargo['destination'],
+                                ));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.04,
+                              vertical: screenHeight * 0.015,
                             ),
-                            child: const Text("Get Loc"),
                           ),
-                          OutlinedButton(
-                            onPressed: () {
-                              controlsDetails.confirmOrder(cargo[index]);
-                              controlsDetails.cancelOrder(index);
+                          child: const Text(
+                            "Get Loc",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            controlsDetails.confirmOrder(cargo[index]);
+                            controlsDetails.cancelOrder(index);
 
-                              Get.snackbar('Confirmation Message',
-                                  "order has been Confirm");
+                            Get.snackbar(
+                              'Confirmation Message',
+                              "Order has been confirmed",
+                              backgroundColor: Colors.green,
+                              colorText: Colors.white,
+                            );
 
-                              Get.to(() => AdminDashBoard(
-                                    cargoHistory:
-                                        controlsDetails.confirmcargo.toList(),
-                                  ));
-                            },
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStateProperty.all<Color>(Colors.orange),
-                              foregroundColor:
-                                  WidgetStateProperty.all<Color>(Colors.white),
+                            Get.to(() => AdminDashBoard(
+                                  cargoHistory:
+                                      controlsDetails.confirmcargo.toList(),
+                                ));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.04,
+                              vertical: screenHeight * 0.015,
                             ),
-                            child: const Text("Confirm"),
-                          )
-                        ])
+                          ),
+                          child: const Text(
+                            "Confirm",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            controlsDetails.cancelOrder(index);
+                            if (kDebugMode) {
+                              print(
+                                  "Updated Cargo Details List: ${controlsDetails.cargoDetails}");
+                            }
+                          },
+                          child: const Text(
+                            "Reject",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
-                trailing: TextButton(
-                    onPressed: () {
-                      // Remove the card from the cargoDetails list
-                      controlsDetails.cancelOrder(index);
-                      if (kDebugMode) {
-                        print(
-                            "Updated Cargo Details List: ${controlsDetails.cargoDetails}");
-                      }
-                    },
-                    child: const Text(
-                      "Reject",
-                      style: TextStyle(color: Colors.red),
-                    )),
               ),
             );
           },
