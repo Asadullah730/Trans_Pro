@@ -15,6 +15,7 @@ class SignUpScreen extends StatelessWidget {
   final _confirmpasswordcontroller = TextEditingController();
   final RxBool _obscureText = true.obs;
   final RxBool _obscureText1 = true.obs;
+  final RxBool _isLoading = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,6 @@ class SignUpScreen extends StatelessWidget {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  // Color(0xFF1A1D23),
                   Colors.blue,
                   Colors.white,
                   Colors.green,
@@ -141,43 +141,56 @@ class SignUpScreen extends StatelessWidget {
                           if (value == null || value.isEmpty) {
                             return "Confirm Password is required";
                           } else if (value != _passwordcontroller.text) {
-                            return "Passwords does not match!!!";
+                            return "Passwords do not match!!!";
                           }
                           return null; // Validation passed
                         },
                       ),
                     ),
                     const SizedBox(height: 40),
-                    CustomButton(
-                      text: "R E G I S T E R",
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          FirebaseAuthController()
-                              .registerWithEmailAndPassword(
-                                  _emailcontroller.text,
-                                  _passwordcontroller.text)
-                              .then((Value) {
-                            if (Value != null) {
-                              Get.to(LoginScreen());
+                    Obx(
+                      () => CustomButton(
+                        text: "R E G I S T E R",
+                        isLoading: _isLoading.value,
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _isLoading.value = true; // Show loading indicator
+                            FirebaseAuthController()
+                                .registerWithEmailAndPassword(
+                                    _emailcontroller.text,
+                                    _passwordcontroller.text)
+                                .then((Value) {
+                              _isLoading.value =
+                                  false; // Hide loading indicator
+                              if (Value != null) {
+                                Get.to(LoginScreen());
+                                Get.snackbar(
+                                  'Authentication Message',
+                                  'Your account has been created successfully',
+                                  backgroundColor: Colors.green,
+                                  colorText: Colors.white,
+                                );
+                              } else {
+                                Get.snackbar(
+                                  'Authentication Message',
+                                  'Error in creating account',
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                );
+                              }
+                            }).catchError((error) {
+                              _isLoading.value = false; // Hide loading on error
                               Get.snackbar(
-                                'Authentication Message',
-                                'Your account has been created successfully',
-                                backgroundColor: Colors.green,
-                                colorText: Colors.white,
-                              );
-                            } else {
-                              Get.snackbar(
-                                'Authentication Message',
-                                'Error in creating account',
+                                'Error',
+                                'An unexpected error occurred',
                                 backgroundColor: Colors.red,
                                 colorText: Colors.white,
                               );
-                            }
-                          });
-                        }
-                      },
+                            });
+                          }
+                        },
+                      ),
                     ),
-
                     Row(
                       children: [
                         const Text("Already have an Account! ?"),

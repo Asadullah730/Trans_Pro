@@ -11,6 +11,7 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _emailcontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
   final RxBool _obscureText = true.obs;
+  final RxBool _isLoading = false.obs; // Observable to track loading state
 
   LoginScreen({super.key});
 
@@ -25,7 +26,6 @@ class LoginScreen extends StatelessWidget {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  // Color(0xFF1A1D23),
                   Colors.blue,
                   Colors.white,
                   Colors.green,
@@ -39,17 +39,14 @@ class LoginScreen extends StatelessWidget {
             margin: const EdgeInsets.only(top: 30, bottom: 0),
             padding: const EdgeInsets.all(16.0),
             child: Form(
-              key: _formKey, // Assign the _formKey to the Form widget
+              key: _formKey,
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    // SignUp Page Icon
+                    const SizedBox(height: 20),
                     const CircleAvatar(
                       backgroundImage:
                           AssetImage("assets/splash_img/app_logo.jpeg"),
@@ -76,7 +73,6 @@ class LoginScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-
                     const SizedBox(height: 20),
                     TextFormField(
                       validator: (value) =>
@@ -91,7 +87,6 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-
                     Obx(
                       () => TextFormField(
                         obscureText: _obscureText.value,
@@ -116,57 +111,70 @@ class LoginScreen extends StatelessWidget {
                             .validatePassword(value),
                       ),
                     ),
-
                     const SizedBox(height: 40),
-                    CustomButton(
-                      text: "L O G I N",
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          if (_emailcontroller.text.toString() ==
-                                  "codebotx@gmail.com" &&
-                              _passwordcontroller.text.toString() ==
-                                  "codebotx") {
-                            Get.to(AdminDashBoard());
-                            Get.snackbar(
-                              'Authentication Message',
-                              'Admin Login Successfully',
-                              duration: const Duration(seconds: 2),
-                              backgroundColor: Colors.purple,
-                              colorText: Colors.white,
-                            );
-                          } else {
-                            FirebaseAuthController()
-                                .signInWithEmailAndPassword(
-                                    _emailcontroller.text,
-                                    _passwordcontroller.text)
-                                .then((value) {
-                              if (value != null) {
-                                Get.to(const HomeScreen());
-                                Get.snackbar(
-                                  'Authentication Message',
-                                  'Login Successfully',
-                                  duration: const Duration(seconds: 2),
-                                  backgroundColor: Colors.purple,
-                                  colorText: Colors.white,
-                                );
-                              } else {
-                                Get.snackbar(
-                                  'Authentication Message',
-                                  'Login Failed, Please try again',
-                                  duration: const Duration(seconds: 2),
-                                  backgroundColor: Colors.red,
-                                  colorText: Colors.white,
-                                );
-                              }
-                            });
-                          }
-                        }
-                      },
+                    Obx(
+                      () => CustomButton(
+                        text: "L O G I N",
+                        isLoading: _isLoading.value,
+                        onPressed: _isLoading.value
+                            ? null
+                            : () {
+                                if (_formKey.currentState!.validate()) {
+                                  _isLoading.value = true; // Start loading
+                                  Future.delayed(const Duration(seconds: 2),
+                                      () {
+                                    // Simulate login process
+                                    _isLoading.value = false; // Stop loading
+                                    if (_emailcontroller.text ==
+                                            "codebotx@gmail.com" &&
+                                        _passwordcontroller.text ==
+                                            "codebotx") {
+                                      Get.to(AdminDashBoard());
+                                      Get.snackbar(
+                                        'Authentication Message',
+                                        'Admin Login Successfully',
+                                        duration: const Duration(seconds: 2),
+                                        backgroundColor: Colors.purple,
+                                        colorText: Colors.white,
+                                      );
+                                    } else {
+                                      FirebaseAuthController()
+                                          .signInWithEmailAndPassword(
+                                              _emailcontroller.text,
+                                              _passwordcontroller.text)
+                                          .then((value) {
+                                        _isLoading.value =
+                                            false; // Stop loading
+                                        if (value != null) {
+                                          Get.to(const HomeScreen());
+                                          Get.snackbar(
+                                            'Authentication Message',
+                                            'Login Successfully',
+                                            duration:
+                                                const Duration(seconds: 2),
+                                            backgroundColor: Colors.purple,
+                                            colorText: Colors.white,
+                                          );
+                                        } else {
+                                          Get.snackbar(
+                                            'Authentication Message',
+                                            'Login Failed, Please try again',
+                                            duration:
+                                                const Duration(seconds: 2),
+                                            backgroundColor: Colors.red,
+                                            colorText: Colors.white,
+                                          );
+                                        }
+                                      });
+                                    }
+                                  });
+                                }
+                              },
+                      ),
                     ),
-
                     Row(
                       children: [
-                        const Text("you Don't have Account ? "),
+                        const Text("You Don't have Account?"),
                         const SizedBox(width: 10),
                         TextButton(
                           onPressed: () {

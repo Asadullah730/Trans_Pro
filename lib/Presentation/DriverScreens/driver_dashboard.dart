@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:transpro/Model/ImagesModel.dart';
 import 'package:transpro/Presentation/DriverScreens/driverNotification.dart';
 import 'package:transpro/component/cus_drawer.dart';
+import 'package:transpro/component/custom_app_bar.dart';
 import 'package:transpro/component/custom_button.dart';
 
 class DriverDashboard extends StatelessWidget {
@@ -13,6 +14,9 @@ class DriverDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(
+        title: 'Driver Dashboard',
+      ),
       drawer: CustomDrawer(),
       body: Container(
         margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
@@ -51,28 +55,6 @@ class DriverDashboard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.lightBlue),
               ),
-            ),
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: path.imgPath.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.all(5),
-                    child: Image.asset(
-                      path.imgPath[index],
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 50,
             ),
             CustomButton(
                 text: "Check order",
